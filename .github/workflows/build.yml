@@ -30,13 +30,13 @@ jobs:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
 
-      # --- NEW STEP 1: Set up Python ---
+      # --- STEP 1: Set up Python ---
       - name: 🐍 Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           
-      # --- NEW STEP 2: Train the Model and Create model.pkl ---
+      # --- STEP 2: Train the Model and Create model.pkl ---
       - name: 🧠 Install dependencies and Train Model
         run: |
           pip install --upgrade pip
@@ -54,6 +54,17 @@ jobs:
             type=sha,format=long,prefix=sha-
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             
+      # 💥 NEW STEP: Extract the single, primary tag for local scanning
+      - name: 📝 Extract Single Image Reference for Scan
+        id: image_ref
+        run: |
+          # metadata-action outputs tags separated by commas. We take the first one 
+          # (the SHA tag, e.g., ghcr.io/user/repo:sha-1234...) which is guaranteed to be created.
+          # This avoids the "could not parse reference" error in Trivy.
+          SINGLE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | cut -d ',' -f 1)
+          echo "LOCAL_IMAGE_REF=$SINGLE_TAG" >> $GITHUB_ENV
+          echo "Extracted local image reference: $SINGLE_TAG"
+        
       - name: ⚙️ Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         
@@ -80,7 +91,9 @@ jobs:
       - name: 🛡️ Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ steps.meta.outputs.tags }}
+          #image-ref: steps.meta.outputs.tags # ❌ OLD CODE
+          # 🎯 CHANGE: Use the single, unambiguous tag extracted in the new step
+          image-ref: ${{ env.LOCAL_IMAGE_REF }}
           format: 'table'
           # Fail the job if a Critical or High severity vulnerability is found
           exit-code: '1' 
