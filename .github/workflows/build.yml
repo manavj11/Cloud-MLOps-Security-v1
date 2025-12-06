@@ -58,9 +58,6 @@ jobs:
       - name: 📝 Extract Single Image Reference for Scan
         id: image_ref
         run: |
-          # metadata-action outputs tags separated by commas. We take the first one 
-          # (the SHA tag, e.g., ghcr.io/user/repo:sha-1234...) which is guaranteed to be created.
-          # This avoids the "could not parse reference" error in Trivy.
           SINGLE_TAG=$(echo "${{ steps.meta.outputs.tags }}" | cut -d ',' -f 1)
           echo "LOCAL_IMAGE_REF=$SINGLE_TAG" >> $GITHUB_ENV
           echo "Extracted local image reference: $SINGLE_TAG"
