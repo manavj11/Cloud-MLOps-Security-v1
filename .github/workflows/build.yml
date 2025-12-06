@@ -30,6 +30,21 @@ jobs:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
 
+      # --- NEW STEP 1: Set up Python ---
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      # --- NEW STEP 2: Train the Model and Create model.pkl ---
+      - name: 🧠 Install dependencies and Train Model
+        run: |
+          pip install --upgrade pip
+          # Install training and app dependencies
+          pip install -r requirements.txt
+          # Run the script to generate the model.pkl file
+          python model_trainer.py
+
       - name: 🏷️ Set up image tags
         id: meta
         uses: docker/metadata-action@v5
