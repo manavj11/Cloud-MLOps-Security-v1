@@ -76,16 +76,21 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           load: true # Load the image into the local runner's Docker daemon for scanning
 
+          
       # --- STEP 4: DevSecOps Scan with Trivy ---
       - name: 🛡️ Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ steps.meta.outputs.tags }}
+          # FIX: Reference the specific image name and latest tag
+          # instead of the full list of tags from steps.meta.outputs.tags.
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          # image-ref: steps.meta.outputs.tags }}
           format: 'table'
           # Fail the job if a Critical or High severity vulnerability is found
           exit-code: '1' 
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
+
 
       # --- STEP 5: Push the Docker Image ---
       - name: 🚀 Publish Docker image to GHCR
