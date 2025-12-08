@@ -1,6 +1,6 @@
 # main.py
 # -----------------------------------------------------------------------------
-# STEP 2: API & Dockerfile (FastAPI application)
+# API & Dockerfile (FastAPI application)
 # Loads model.pkl and exposes a /predict endpoint.
 # -----------------------------------------------------------------------------
 import pickle
