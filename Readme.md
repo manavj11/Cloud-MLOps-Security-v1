@@ -2,8 +2,8 @@ How to Run This POC
 Project Setup:
 
 Bash
-mkdir minimal-mlops-poc
-cd minimal-mlops-poc
+mkdir cloud-mlops-security-v1
+cd cloud-mlops-security-v1
 # Create the files above: model_trainer.py, main.py, requirements.txt, Dockerfile
 mkdir -p .github/workflows
 # Create the build.yml file inside .github/workflows/
