@@ -1,42 +1,93 @@
-# How to Run This POC - Cloud-MLOps-Security-v1
-## 1. Project Setup
+## 🚀 Cloud-MLOps-Security-v1 Proof of Concept (PoC)
 
-### Bash
-mkdir cloud-mlops-security-v1
-cd cloud-mlops-security-v1
+Welcome to the Cloud-MLOps-Security-v1 PoC! This guide will walk you through setting up and running the project, culminating in a demonstration of **CI/CD security checks** using GitHub Actions.
 
-(Create the files above: model_trainer.py, main.py, requirements.txt, Dockerfile)
+---
 
-mkdir -p .github/workflows
+## 1. Project Setup and File Structure
 
-(Create the build.yml file inside .github/workflows/)
+Begin by creating the project directory and necessary files.
 
-## 2. Train the Model
+### 🛠️ Directory and File Creation
 
-### Bash
-pip install -r requirements.txt 
-python model_trainer.py
+* **Create Project Directory:**
+    ```bash
+    mkdir cloud-mlops-security-v1
+    cd cloud-mlops-security-v1
+    ```
+* **Create Application Files:**
+    > *You must create the following files in the root directory:*
+    > * `model_trainer.py`
+    > * `main.py`
+    > * `requirements.txt`
+    > * `Dockerfile`
+* **Create CI/CD Workflow Directory and File:**
+    ```bash
+    mkdir -p .github/workflows
+    ```
+    > *Create the following file:*
+    > * `.github/workflows/build.yml`
 
-(This creates the essential 'model.pkl' file.)
-(Optional: Create and activate a Python virtual environment)
+---
 
-## 3. GitHub CI/CD Automatic building and checking
+## 2. Model Training (Local)
 
-GitHub CI/CD:
+Before running the application, you need to train the model locally.
 
-Initialize a Git repository, commit the files, and push to a new GitHub repository's main branch.
+### 💻 Training Steps
 
-The build.yml workflow will automatically trigger, executing the Build, Scan, and Publish steps. The final image will be available in your repository's Packages section on GitHub Container Registry (ghcr.io).
-
-## 4. Review CI/CD Logs in Github Actions
-
-As of 08 Dec 2025, the build pipeline will fail at the below error, thereby showcasing the checks working as expected to not allow older libraries with CVEs to run.
-
-│       Library        │ Vulnerability  │ Severity │ Status │ Installed Version │ Fixed Version
-
-
-│ starlette (METADATA) │ CVE-2024-47874 │ HIGH     │ fixed  │ 0.27.0            │ 0.40.0
+1.  **(Optional but Recommended):** Create and activate a Python virtual environment.
+2.  **Install Dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  **Run Trainer:**
+    ```bash
+    python model_trainer.py
+    ```
 
 
-Happy testing!
+---
+
+## 3. GitHub CI/CD: Automated Build and Security Scan
+
+This step triggers the automated pipeline that showcases the **security scanning** in action.
+
+### ☁️ CI/CD Trigger
+
+1.  **Initialize Git:**
+    ```bash
+    git init
+    git add .
+    git commit -m "Initial commit for PoC setup"
+    ```
+2.  **Set Up and Push to GitHub:**
+    * Create a new repository on GitHub.
+    * Connect your local repository and push the code to the `main` branch.
+
+> 🚀 **Action:** Pushing to the `main` branch will **automatically trigger** the `build.yml` workflow. This workflow executes the **Build**, **Scan**, and **Publish** steps. The final image will be published to your repository's **Packages** section on GitHub Container Registry (`ghcr.io`)—*if the scan passes*. 
+
+---
+
+## 4. Reviewing the CI/CD Security Failure
+
+The pipeline is intentionally configured to fail to demonstrate effective security gatekeeping.
+
+### 🛑 Expected Failure and Log Review
+
+Review the logs in your repository's **GitHub Actions** tab. You will see the pipeline fail at the security scan step.
+
+* **Date of Test:** As of **08 Dec 2025**, the build pipeline is expected to fail at this step.
+* **Reason:** The pipeline uses a security scanner to prevent deployment of an image with known **Common Vulnerabilities and Exposures (CVEs)** in older dependencies.
+
+| Library (Source) | Vulnerability | Severity | Status | Installed Version | Fixed Version |
+| :--------------- | :------------ | :------- | :----- | :---------------- | :------------ |
+| `starlette`      | `CVE-2024-47874` | **HIGH** | fixed  | `0.27.0`          | `0.40.0`      |
+
+ ✅ **Conclusion:** This failure confirms the security checks are **working as expected** by blocking images that rely on vulnerable, un-patched libraries.
+
+---
+
+
+Happy testing! 
 
