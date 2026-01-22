@@ -15,18 +15,19 @@ Begin by creating the project directory and necessary files.
     mkdir cloud-mlops-security-v1
     cd cloud-mlops-security-v1
     ```
-* **Create Application Files:**
-    > *You must create the following files in the root directory:*
-    > * `model_trainer.py`
-    > * `main.py`
-    > * `requirements.txt`
-    > * `Dockerfile`
+* **Create Application Files:**\
+    You must create the following files in the root directory:
+    - `model_trainer.py`
+    - `main.py`
+    - `requirements.txt`
+    - `Dockerfile`
+
 * **Create CI/CD Workflow Directory and File:**
     ```bash
     mkdir -p .github/workflows
     ```
-    > *Create the following file:*
-    > * `.github/workflows/build.yml`
+    Create the following file:
+    - `.github/workflows/build.yml`
 
 ---
 
@@ -65,7 +66,10 @@ This step triggers the automated pipeline that showcases the **security scanning
     * Create a new repository on GitHub.
     * Connect your local repository and push the code to the `main` branch.
 
-> 🚀 **Action:** Pushing to the `main` branch will **automatically trigger** the `build.yml` workflow. This workflow executes the **Build**, **Scan**, and **Publish** steps. The final image will be published to your repository's **Packages** section on GitHub Container Registry (`ghcr.io`)—*if the scan passes*. 
+### 🚀 Action:
+Pushing to the `main` branch will **automatically trigger** the `build.yml` workflow. \
+This workflow executes the **Build**, **Scan**, and **Publish** steps. \
+The final image will be published to your repository's **Packages** section on GitHub Container Registry (`ghcr.io`)—*if the scan passes*. 
 
 ---
 
